@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
+import java.net.URL;
 import java.util.Properties;
 
 public class ApiTest {
@@ -26,17 +27,19 @@ public class ApiTest {
     private Properties loadFromEnvProperties(String propFileName) {
         Properties prop = null;
 
-        String path = System.getProperty("user.home");
+        //String path = System.getProperty("user.home");
+        URL url =getClass().getClassLoader().getResource(propFileName);
 
         //读入envProperties属性文件
         try {
             prop = new Properties();
             InputStream in = new BufferedInputStream(
-                    new FileInputStream(path + File.separator + propFileName));
+                    //new FileInputStream(path + File.separator + propFileName));
+                    new FileInputStream(url.getPath()));
             prop.load(in);
             in.close();
         } catch (IOException ioex) {
-            System.err.println("配置文件加载失败，请检查 " + path + File.separator + propFileName + "文件是否存在！");
+            System.err.println("配置文件加载失败，请检查 " + url + File.separator + propFileName + "文件是否存在！");
         }
 
         return prop;
